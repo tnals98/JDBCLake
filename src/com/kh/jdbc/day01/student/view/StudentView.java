@@ -11,7 +11,7 @@ public class StudentView {
 	public StudentView() {
 		controller = new StudentController();
 	}
-	
+
 	public void startProgram() {
 		while(true){
 			int choice = printMenu();
@@ -36,7 +36,7 @@ public class StudentView {
 			}
 		}
 	}
-	
+
 	private void showAllStudents(List<Student> sList) {
 		System.out.println("===== 학생 전체 정보 출력 =====");
 		for(Student student : sList) {
@@ -44,7 +44,7 @@ public class StudentView {
 					, student.getStudentName(), student.getAge(), student.getStudentId(), student.getGender(), student.getEmail(), student.getPhone(),student.getAddress(),student.getHobby(),student.getEnrollDate());
 		}
 	}
-	
+
 	public int printMenu() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("===== 학생관리 프로그램 =====");

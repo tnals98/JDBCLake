@@ -7,7 +7,7 @@ import java.util.List;
 import com.kh.jdbc.day01.student.model.vo.Student;
 
 public class StudentDAO {
-	
+
 	public List<Student> selectAll() {
 		/*
 		 * 1. 드라이버 등록
