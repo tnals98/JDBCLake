@@ -63,4 +63,9 @@ public class StudentDAO {
 		}
 		return sList;
 	}
+
+	public int deleteStudent(String studentId) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }
