@@ -10,34 +10,35 @@ import com.kh.jdbc.day04.student.model.vo.Student;
 public class StudentService {
 	private StudentDAO sDao;
 	private JDBCTemplate jdbcTemplate;
-	
+
 	public StudentService() {
 		sDao = new StudentDAO();
 //		jdbcTemplate = new JDBCTemplate(); // 생성자가 private이기 때문에 사용 못 함
 		jdbcTemplate = JDBCTemplate.getInstance();
 	}
-	
+
 	public List<Student> selectAll() {
-		Connection conn = jdbcTemplate.createConnection();
-		List<Student> sList = sDao.selectAll(conn);
-		jdbcTemplate.close();
+		List<Student> sList = null;
+		try {
+			Connection conn = jdbcTemplate.createConnection();
+			sList = sDao.selectAll(conn);
+			jdbcTemplate.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return sList;
 	}
-	
+
 	public Student selectOneById(String studentId) {
-		Connection conn 
-		= jdbcTemplate.createConnection();
-		Student student 
-		= sDao.selectOneById(conn, studentId);
+		Connection conn = jdbcTemplate.createConnection();
+		Student student = sDao.selectOneById(conn, studentId);
 		jdbcTemplate.close();
 		return student;
 	}
-	
+
 	public List<Student> selectAllByName(String studentName) {
-		Connection conn 
-		= jdbcTemplate.createConnection();
-		List<Student> sList 
-		= sDao.selectAllByName(conn, studentName);
+		Connection conn = jdbcTemplate.createConnection();
+		List<Student> sList = sDao.selectAllByName(conn, studentName);
 		jdbcTemplate.close();
 		return sList;
 	}
@@ -45,6 +46,12 @@ public class StudentService {
 	public int insertStudent(Student student) {
 		Connection conn = jdbcTemplate.createConnection();
 		int result = sDao.insertStudent(conn, student);
+		result += sDao.updateStudent(conn, student);
+		if (result > 1) {
+			JDBCTemplate.commit(conn);
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
 		jdbcTemplate.close();
 		return result;
 	}
@@ -52,6 +59,11 @@ public class StudentService {
 	public int updateStudent(Student student) {
 		Connection conn = jdbcTemplate.createConnection();
 		int result = sDao.updateStudent(conn, student);
+		if (result > 0) {
+			JDBCTemplate.commit(conn);
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
 		jdbcTemplate.close();
 		return result;
 	}
@@ -59,6 +71,11 @@ public class StudentService {
 	public int deleteStudent(String studentId) {
 		Connection conn = jdbcTemplate.createConnection();
 		int result = sDao.deleteStudent(conn, studentId);
+		if (result > 0) {
+			JDBCTemplate.commit(conn);
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
 		jdbcTemplate.close();
 		return result;
 	}
